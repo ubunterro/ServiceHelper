@@ -53,8 +53,8 @@ public class MainActivity extends AppCompatActivity {
         DBAgent.context = getBaseContext();
         DBAgent.initRequestQueue();
 
-        RepairsStorage.repairs.add(new Repair(666, "canon lexmark laserJet", "Putin", Repair.ClientTypes.IP, Repair.Status.DONE));
-        RepairsStorage.repairs.add(new Repair(1488, "mobila", "IFNS", Repair.ClientTypes.IP, Repair.Status.DONE));
+        //RepairsStorage.repairs.add(new Repair(666, "canon lexmark laserJet", "Putin", Repair.ClientTypes.IP, Repair.Status.DONE));
+        //RepairsStorage.repairs.add(new Repair(1488, "mobila", "IFNS", Repair.ClientTypes.IP, Repair.Status.DONE));
         //RepairsStorage.repairs.add(new Repair(228, "utug", "Agropromservis", Repair.ClientTypes.IP, Repair.Status.DONE));
         redrawList();
 

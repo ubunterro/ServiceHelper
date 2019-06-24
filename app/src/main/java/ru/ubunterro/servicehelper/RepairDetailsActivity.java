@@ -2,14 +2,11 @@ package ru.ubunterro.servicehelper;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
+import android.support.design.widget.TabLayout;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.View;
-import android.widget.TextView;
-
-import java.util.Objects;
+import android.util.Log;
 
 public class RepairDetailsActivity extends AppCompatActivity {
 
@@ -20,40 +17,68 @@ public class RepairDetailsActivity extends AppCompatActivity {
         return true;
     }
 
+    private SectionPageAdapter mSectionsPageAdapter;
+    private ViewPager mViewPager;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_repair_details);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbarDetails);
+        setContentView(R.layout.content_repair_details);
 
-        setSupportActionBar(toolbar);
+
+
 
         //toolbar.setNavigationIcon(getResources().getDrawable(R.drawable.ic_action_back));
 
-        TextView textViewRId = (TextView) findViewById(R.id.textViewRId);
+       // TextView textViewRId = (TextView) findViewById(R.id.textViewRId);
 
         Intent intent = getIntent();
         int repairId = intent.getExtras().getInt("id");
 
         Repair r = RepairsStorage.getRepair(repairId);
-        textViewRId.setText(Integer.toString(repairId));
-
-        //textViewRId.setText("nibba");
-
-        Objects.requireNonNull(getSupportActionBar()).setDisplayShowTitleEnabled(false);
 
 
+        //Objects.requireNonNull(getSupportActionBar()).setDisplayShowTitleEnabled(false);
 
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        mSectionsPageAdapter = new SectionPageAdapter(getSupportFragmentManager());
+        mViewPager = (ViewPager) findViewById(R.id.container);
+        setupViewPager(mViewPager);
+
+        TabLayout tabLayout = (TabLayout)findViewById(R.id.tabs);
+        tabLayout.setupWithViewPager(mViewPager);
+
+
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+
+        getSupportActionBar().setTitle(Integer.toString(repairId));
+
+
+
+       /* FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
             }
-        });
+        });*/
 
 
+    }
+
+    private void setupViewPager(ViewPager viewPager){
+        Log.d("tabs", "setup");
+
+        SectionPageAdapter adapter = new SectionPageAdapter(getSupportFragmentManager());
+
+        adapter.addFragment(new InfoTab(), "Инфо");
+        adapter.addFragment(new NotesTab(), "Заметки");
+
+        viewPager.setAdapter(adapter);
     }
 }

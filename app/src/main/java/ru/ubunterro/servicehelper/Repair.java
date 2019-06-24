@@ -5,24 +5,21 @@ public class Repair {
 
     }
 
-    public Repair(int id, String name, String client, ClientTypes clientType, Status status) {
+    public Repair(int id, String name, String client, Status status, String description, String recv, String def) {
         this.id = id;
         this.name = name;
         this.client = client;
-        this.clientType = clientType;
         this.status = status;
+        this.description = description;
+        this.recv = recv;
+        this.def = def;
     }
 
     public enum Status{
+        IN_WORK,
         DONE
     }
 
-    public enum ClientTypes{
-        ORGANIZATION,
-        IP,
-        PRIVATE,
-        GROUP
-    }
 
     private int id;
 
@@ -50,13 +47,7 @@ public class Repair {
         this.client = client;
     }
 
-    public ClientTypes getClientType() {
-        return clientType;
-    }
 
-    public void setClientType(ClientTypes clientType) {
-        this.clientType = clientType;
-    }
 
     public Status getStatus() {
         return status;
@@ -68,6 +59,34 @@ public class Repair {
 
     private String name = "none";
     private String client = "noone";
-    private ClientTypes clientType = ClientTypes.PRIVATE;
     private Status status = Status.DONE;
+    private String description = "";
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public String getRecv() {
+        return recv;
+    }
+
+    public void setRecv(String recv) {
+        this.recv = recv;
+    }
+
+    public String getDef() {
+        return def;
+    }
+
+    public void setDef(String def) {
+        this.def = def;
+    }
+
+
+    private String recv = "";
+    private String def = "";
 }

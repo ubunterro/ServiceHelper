@@ -59,6 +59,10 @@ public class DBAgent {
                      r.setId(jRepair.getInt("id"));
                      r.setClient(jRepair.getString("client"));
                      r.setName(jRepair.getString("name"));
+                     r.setDef(jRepair.getString("def"));
+                     r.setDescription(jRepair.getString("desc"));
+                     r.setRecv(jRepair.getString("recv"));
+                     //r.setStatus();
 
                      repairs.add(r);
                  }
@@ -93,19 +97,17 @@ public class DBAgent {
                         // TODO: Handle error
 
                         if (error instanceof TimeoutError || error instanceof NoConnectionError) {
-                            Log.d("Volley", "pasdloho");
+                            Log.d("Volley", "NoConnectionError");
                         } else if (error instanceof AuthFailureError) {
-                            Log.d("Volley", "plasdoho");
+                            Log.d("Volley", "AuthFailureError");
                         } else if (error instanceof ServerError) {
-                            Log.d("Volley", "plohdfgo");
+                            Log.d("Volley", "ServerError");
                         } else if (error instanceof NetworkError) {
-                            Log.d("Volley", "plodasdho");
+                            Log.d("Volley", "NetworkError");
                         } else if (error instanceof ParseError) {
-                            Log.d("Volley", "pldsadoho");
+                            Log.d("Volley", "ParseError");
                         }
 
-
-                        //Log.d("Volley", "ploho");
 
                     }
                 });
@@ -118,7 +120,6 @@ public class DBAgent {
         List<Repair> repairs = new ArrayList<Repair>();
 
         makeRequest(baseUrl);//+"&request=lastRepairs"); //TODO govno
-
 
     }
 
