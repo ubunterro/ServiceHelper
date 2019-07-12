@@ -1,24 +1,34 @@
 package ru.ubunterro.servicehelper;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.Snackbar;
+import android.support.design.widget.TextInputEditText;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
-public class InfoTab extends Fragment {
+import java.util.HashMap;
+import java.util.Map;
+
+public class InfoTab extends Fragment implements View.OnClickListener {
     private static final String TAG = "Tab1Fragment";
 
 
     public InfoTab(){
 
     }
+
+    private Repair r;
 
 
     @Override
@@ -31,7 +41,7 @@ public class InfoTab extends Fragment {
         Intent intent = getActivity().getIntent();
         int repairId = intent.getExtras().getInt("id");
 
-        Repair r = RepairsStorage.getRepair(repairId);
+        r = RepairsStorage.getRepair(repairId);
 
 
         TextView textNameInfo = view.findViewById(R.id.textNameInfo);
@@ -48,6 +58,53 @@ public class InfoTab extends Fragment {
         textRecvInfo.setText(r.getRecv());
         textDescInfo.setText(r.getDescription());
 
+
+        Button orderButton = view.findViewById(R.id.buttonOrder);
+        orderButton.setOnClickListener(this);
+
         return view;
+    }
+
+
+    public void onClick(View view){
+        switch (view.getId()){
+            case R.id.buttonOrder:
+                AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(getActivity());
+                LayoutInflater inflater = this.getLayoutInflater();
+                final View dialogView = inflater.inflate(R.layout.order_dialog, null);
+                final View parentView = view;
+                dialogBuilder.setView(dialogView);
+
+                final TextInputEditText edt = dialogView.findViewById(R.id.textEditPartDesc);
+
+                dialogBuilder.setTitle("Заказ детали");
+                //dialogBuilder.setMessage("Ну да");
+                dialogBuilder.setPositiveButton("ОК", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int whichButton) {
+                        //http://149.154.68.13/order.php?password=123789456&num=1&dev=2&fio=a&order=b
+                        Map<String, String> params = new HashMap<String, String>();
+                        params.put("password", "123789456");
+                        params.put("num", Integer.toString(r.getId()));
+                        params.put("dev", r.getName());
+                        params.put("fio", SettingsManager.getFIO(getContext()));
+                        params.put("order", edt.getText().toString());
+
+                        DBAgent.makePostRequest("http://149.154.68.13/order.php", params);
+                        Snackbar.make(parentView, "Заказ отправлен", Snackbar.LENGTH_LONG)
+                                .setAction("Action", null).show();
+
+
+                    }
+                });
+                dialogBuilder.setNegativeButton("Отмена", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int whichButton) {
+                        //pass
+                    }
+                });
+                AlertDialog b = dialogBuilder.create();
+                b.show();
+
+
+        }
     }
 }

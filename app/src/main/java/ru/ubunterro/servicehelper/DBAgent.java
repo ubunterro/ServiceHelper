@@ -14,6 +14,7 @@ import com.android.volley.ServerError;
 import com.android.volley.TimeoutError;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
 import org.json.JSONArray;
@@ -22,11 +23,18 @@ import org.json.JSONObject;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class DBAgent {
 
-    final static String baseUrl = "http://ubunterro.ru/service.php";//"http://192.168.0.101/serviceServer/rest.php?code=123";
+    static String baseUrl = "http://ubunterro.ru/service.php";//"http://192.168.0.101/serviceServer/rest.php?code=123";
+
+
+    //TODO
+
+
 
     private static RequestQueue queue;
     public static Context context;
@@ -40,6 +48,13 @@ public class DBAgent {
     public static int initRequestQueue(){
         queue = Volley.newRequestQueue(context);
         return 0;
+    }
+
+    public static void setContext(Context context) {
+        DBAgent.context = context;
+        //TODO change to a proper address
+        //baseUrl = "http://x/ServiceHelper/api.php?code=" + SettingsManager.getLogin(context) + "&cmd=list";
+
     }
 
     private static void requestCallback(JSONObject response){
@@ -116,10 +131,42 @@ public class DBAgent {
         queue.add(jsonObjectRequest);
     }
 
+
+
+    // A request without a callback
+    public static void makePostRequest(String url, final Map<String, String> paramsIn){
+        StringRequest postRequest = new StringRequest(Request.Method.POST, url,
+                new Response.Listener<String>()
+                {
+                    @Override
+                    public void onResponse(String response) {
+                        // response
+                        Log.d("Volley", "post ok");
+                    }
+                },
+                new Response.ErrorListener()
+                {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        // error
+                        Log.d("Volley", "error post");
+                    }
+                }
+        ) {
+            @Override
+            protected Map<String, String> getParams()
+            {
+                Map<String, String>  params = paramsIn;
+                return params;
+            }
+        };
+
+        queue.add(postRequest);
+    }
+
     public static void getLastRepairs(){
         List<Repair> repairs = new ArrayList<Repair>();
-
-        makeRequest(baseUrl);//+"&request=lastRepairs"); //TODO govno
+        makeRequest(baseUrl);
 
     }
 

@@ -50,7 +50,8 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        DBAgent.context = getBaseContext();
+        //DBAgent.context = getBaseContext();
+        DBAgent.setContext(getBaseContext());
         DBAgent.initRequestQueue();
 
         //RepairsStorage.repairs.add(new Repair(666, "canon lexmark laserJet", "Putin", Repair.ClientTypes.IP, Repair.Status.DONE));
@@ -62,7 +63,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void redrawList(){
-        Log.w("Volley", "redrawn!");
+        //Log.w("Volley", "redrawn!");
         RecyclerView recyclerView = (RecyclerView) findViewById(R.id.list);
         // создаем адаптер
         DataAdapter adapter = new DataAdapter(this, RepairsStorage.repairs);
@@ -86,10 +87,12 @@ public class MainActivity extends AppCompatActivity {
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
+        if (id == R.id.loginMenuItem) {
+            Log.d("actif", "yas");
+            Intent goToLoginActivity = new Intent(this, LoginActivity.class);
+            this.startActivity(goToLoginActivity);
         }
 
-        return super.onOptionsItemSelected(item);
+        return true;
     }
 }
