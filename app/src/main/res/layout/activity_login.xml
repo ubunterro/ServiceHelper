@@ -37,6 +37,22 @@
             android:hint="Фио для заказа" />
     </android.support.design.widget.TextInputLayout>
 
+    <android.support.design.widget.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="0dp"
+        android:layout_marginTop="145dp">
+
+        <android.support.design.widget.TextInputEditText
+            android:id="@+id/textEditServer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Адрес сервера" />
+    </android.support.design.widget.TextInputLayout>
+
+
     <Button
         android:id="@+id/buttonSaveLogin"
         android:layout_width="match_parent"

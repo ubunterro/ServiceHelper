@@ -53,7 +53,7 @@ public class DBAgent {
     public static void setContext(Context context) {
         DBAgent.context = context;
         //TODO change to a proper address
-        //baseUrl = "http://x/ServiceHelper/api.php?code=" + SettingsManager.getLogin(context) + "&cmd=list";
+        baseUrl = SettingsManager.getServer(context)+"?code=" + SettingsManager.getLogin(context) + "&cmd=list";
 
     }
 

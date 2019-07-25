@@ -27,4 +27,16 @@ public class SettingsManager {
         SharedPreferences settings = context.getSharedPreferences("Settings", 0);
         return settings.getString("fio", "Repairer");
     }
+
+    public static void setServer(Context context, String server){
+        SharedPreferences settings = context.getSharedPreferences("Settings", 0);
+        SharedPreferences.Editor editor = settings.edit();
+        editor.putString("server", server);
+        editor.apply();
+    }
+
+    public static String getServer(Context context){
+        SharedPreferences settings = context.getSharedPreferences("Settings", 0);
+        return settings.getString("server", "http://ubunterro.ru/service.php");
+    }
 }
