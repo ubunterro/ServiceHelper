@@ -18,8 +18,10 @@ public class LoginActivity extends AppCompatActivity {
 
         TextInputEditText loginTextEdit = findViewById(R.id.textEditLogin);
         TextInputEditText textEditFio = findViewById(R.id.textEditFIO);
+        TextInputEditText textEditServer = findViewById(R.id.textEditServer);
         loginTextEdit.setText(SettingsManager.getLogin(getBaseContext()));
         textEditFio.setText(SettingsManager.getFIO(getBaseContext()));
+        textEditServer.setText(SettingsManager.getServer(getBaseContext()));
 
     }
 
@@ -38,6 +40,8 @@ public class LoginActivity extends AppCompatActivity {
         SettingsManager.setLogin(getApplicationContext(), login);
         SettingsManager.setFIO(getApplicationContext(), fio);
         SettingsManager.setServer(getApplicationContext(), server);
+
+        DBAgent.updateBaseUrl();
 
         Snackbar.make(v, "Сохранено", Snackbar.LENGTH_LONG).setAction("Action", null).show();
     }

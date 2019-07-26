@@ -41,7 +41,15 @@ public class DataAdapter extends RecyclerView.Adapter<DataAdapter.ViewHolder> {
         holder.idView.setText(Integer.toString(repair.getId()));
         holder.nameView.setText(repair.getName());
         holder.clientView.setText(repair.getClient());
-        holder.imageView.setImageResource(R.drawable.ic_launcher_background);
+
+        Repair.Status status = repair.getStatus();
+
+        if(status == Repair.Status.DONE)
+            holder.imageView.setImageResource(R.drawable.drawable_flag_green);
+        else if(status == Repair.Status.IN_WORK)
+            holder.imageView.setImageResource(R.drawable.drawable_flag_red);
+        else
+            holder.imageView.setImageResource(R.drawable.drawable_zip);
 
     }
 

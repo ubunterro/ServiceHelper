@@ -13,6 +13,7 @@ import com.android.volley.Response;
 import com.android.volley.ServerError;
 import com.android.volley.TimeoutError;
 import com.android.volley.VolleyError;
+import com.android.volley.toolbox.HttpHeaderParser;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
@@ -21,6 +22,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -52,9 +54,17 @@ public class DBAgent {
 
     public static void setContext(Context context) {
         DBAgent.context = context;
-        //TODO change to a proper address
-        baseUrl = SettingsManager.getServer(context)+"?code=" + SettingsManager.getLogin(context) + "&cmd=list";
+        updateBaseUrl();
+    }
 
+    public static void updateBaseUrl(){
+        //baseUrl = "http://ubunterro.ru/service.php";
+        baseUrl = SettingsManager.getServer(context)+"?code=" + SettingsManager.getLogin(context) + "&cmd=list";
+        Log.d("Volley", baseUrl);
+    }
+
+    public static Context getContext(){
+        return DBAgent.context;
     }
 
     private static void requestCallback(JSONObject response){
@@ -77,6 +87,13 @@ public class DBAgent {
                      r.setDef(jRepair.getString("def"));
                      r.setDescription(jRepair.getString("desc"));
                      r.setRecv(jRepair.getString("recv"));
+
+                     //TODO wtf
+                     try {
+                     r.setStatus(Repair.Status.values()[jRepair.getInt("status")]);
+                     } catch (JSONException e){
+                         r.setStatus(Repair.Status.IN_WORK);
+                     }
                      //r.setStatus();
 
                      repairs.add(r);
@@ -111,8 +128,13 @@ public class DBAgent {
                     public void onErrorResponse(VolleyError error) {
                         // TODO: Handle error
 
-                        if (error instanceof TimeoutError || error instanceof NoConnectionError) {
+                        Log.e("Volley", error.getMessage());
+                        MainActivity.showError("NetworkError: " + error.getMessage());
+
+                        if (error instanceof NoConnectionError) {
                             Log.d("Volley", "NoConnectionError");
+                        } else if (error instanceof TimeoutError ) {
+                            Log.d("Volley", "TimeoutError");
                         } else if (error instanceof AuthFailureError) {
                             Log.d("Volley", "AuthFailureError");
                         } else if (error instanceof ServerError) {

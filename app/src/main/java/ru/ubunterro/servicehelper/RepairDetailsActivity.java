@@ -28,20 +28,10 @@ public class RepairDetailsActivity extends AppCompatActivity {
         setContentView(R.layout.content_repair_details);
 
 
-
-
-        //toolbar.setNavigationIcon(getResources().getDrawable(R.drawable.ic_action_back));
-
-       // TextView textViewRId = (TextView) findViewById(R.id.textViewRId);
-
         Intent intent = getIntent();
         int repairId = intent.getExtras().getInt("id");
 
         Repair r = RepairsStorage.getRepair(repairId);
-
-
-        //Objects.requireNonNull(getSupportActionBar()).setDisplayShowTitleEnabled(false);
-
 
         mSectionsPageAdapter = new SectionPageAdapter(getSupportFragmentManager());
         mViewPager = (ViewPager) findViewById(R.id.container);
@@ -58,20 +48,7 @@ public class RepairDetailsActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayShowHomeEnabled(true);
 
         getSupportActionBar().setTitle(Integer.toString(repairId));
-
-
-
-       /* FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
             }
-        });*/
-
-
-    }
 
     private void setupViewPager(ViewPager viewPager){
         Log.d("tabs", "setup");

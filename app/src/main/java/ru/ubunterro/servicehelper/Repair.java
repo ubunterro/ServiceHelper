@@ -17,7 +17,8 @@ public class Repair {
 
     public enum Status{
         IN_WORK,
-        DONE
+        DONE,
+        ZIP
     }
 
 
@@ -59,7 +60,7 @@ public class Repair {
 
     private String name = "none";
     private String client = "noone";
-    private Status status = Status.DONE;
+    private Status status = Status.IN_WORK;
     private String description = "";
 
     public String getDescription() {

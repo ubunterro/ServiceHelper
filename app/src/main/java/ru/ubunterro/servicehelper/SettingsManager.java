@@ -37,6 +37,6 @@ public class SettingsManager {
 
     public static String getServer(Context context){
         SharedPreferences settings = context.getSharedPreferences("Settings", 0);
-        return settings.getString("server", "http://ubunterro.ru/service.php");
+        return settings.getString("server", "http://192.168.112.190:1488/api.php");
     }
 }

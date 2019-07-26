@@ -81,7 +81,6 @@ public class InfoTab extends Fragment implements View.OnClickListener {
                 //dialogBuilder.setMessage("Ну да");
                 dialogBuilder.setPositiveButton("ОК", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int whichButton) {
-                        //http://149.154.68.13/order.php?password=123789456&num=1&dev=2&fio=a&order=b
                         Map<String, String> params = new HashMap<String, String>();
                         params.put("password", "123789456");
                         params.put("num", Integer.toString(r.getId()));

@@ -1,5 +1,6 @@
 package ru.ubunterro.servicehelper;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -22,7 +23,7 @@ public class MainActivity extends AppCompatActivity {
             RecyclerView.ViewHolder viewHolder = (RecyclerView.ViewHolder) v.getTag();
             int position = viewHolder.getAdapterPosition();
             int id = RepairsStorage.repairs.get(position).getId();
-            Toast.makeText(MainActivity.this, Integer.toString(id), Toast.LENGTH_SHORT).show();
+            //Toast.makeText(MainActivity.this, Integer.toString(id), Toast.LENGTH_SHORT).show();
 
 
             Intent goToRepairDetailsActivity = new Intent(getBaseContext(), RepairDetailsActivity.class);
@@ -94,5 +95,10 @@ public class MainActivity extends AppCompatActivity {
         }
 
         return true;
+    }
+
+    public static void showError(String error){
+        Toast toast = Toast.makeText(DBAgent.getContext(), error, Toast.LENGTH_LONG);
+        toast.show();
     }
 }
