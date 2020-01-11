@@ -49,6 +49,8 @@ public class InfoTab extends Fragment implements View.OnClickListener {
         TextView textDefInfo =  view.findViewById(R.id.textDefInfo);
         TextView textRecvInfo =  view.findViewById(R.id.textRecvInfo);
         TextView textDescInfo = view.findViewById(R.id.textDescInfo);
+        TextView textSerialInfo = view.findViewById(R.id.textSerialInfo);
+        TextView textResponsibleInfo = view.findViewById(R.id.textResponsibleInfo);
 
         Log.d("tabs", textNameInfo.getText().toString());
 
@@ -57,7 +59,8 @@ public class InfoTab extends Fragment implements View.OnClickListener {
         textDefInfo.setText(r.getDef());
         textRecvInfo.setText(r.getRecv());
         textDescInfo.setText(r.getDescription());
-
+        textSerialInfo.setText(r.getSerialNumber());
+        textResponsibleInfo.setText(r.getResponsible());
 
         Button orderButton = view.findViewById(R.id.buttonOrder);
         orderButton.setOnClickListener(this);

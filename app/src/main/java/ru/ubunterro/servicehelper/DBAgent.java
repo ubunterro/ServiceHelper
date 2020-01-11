@@ -32,7 +32,10 @@ import java.util.Map;
 public class DBAgent {
 
     static String baseUrl = "http://ubunterro.ru/service.php";//"http://192.168.0.101/serviceServer/rest.php?code=123";
+    static String updateUrl = "http://ubunterro.ru/ServiceHelper/version.json";
 
+    // версия сборки
+    static final int version = 200;
 
     //TODO
 
@@ -103,6 +106,15 @@ public class DBAgent {
                  Log.w("redrawr", "list");
                  activity.redrawList();
 
+                 // смотрим версию
+             } else if(type.equals("getVersion")){
+                 Log.w("Volley", type);
+                 Integer lastVersion = Integer.parseInt(response.get("version").toString());
+
+                 if (lastVersion > version){
+                     activity.doUpdate();
+                 }
+
              }
         } catch (JSONException e) {
             e.printStackTrace();
@@ -126,9 +138,8 @@ public class DBAgent {
 
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        // TODO: Handle error
 
-                        Log.e("Volley", error.getMessage());
+                        Log.e("Volley", "" + error.getMessage());
                         MainActivity.showError("NetworkError: " + error.getMessage());
 
                         if (error instanceof NoConnectionError) {
@@ -144,12 +155,9 @@ public class DBAgent {
                         } else if (error instanceof ParseError) {
                             Log.d("Volley", "ParseError");
                         }
-
-
                     }
                 });
 
-// Access the RequestQueue through your singleton class.
         queue.add(jsonObjectRequest);
     }
 
@@ -190,6 +198,10 @@ public class DBAgent {
         List<Repair> repairs = new ArrayList<Repair>();
         makeRequest(baseUrl);
 
+    }
+
+    public static void checkForUpdates(){
+        makeRequest(updateUrl);
     }
 
 

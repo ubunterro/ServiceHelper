@@ -1,10 +1,15 @@
 package ru.ubunterro.servicehelper;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -14,7 +19,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements SwipeRefreshLayout.OnRefreshListener {
 
 
     private View.OnClickListener onItemClickListener = new View.OnClickListener() {
@@ -23,8 +28,6 @@ public class MainActivity extends AppCompatActivity {
             RecyclerView.ViewHolder viewHolder = (RecyclerView.ViewHolder) v.getTag();
             int position = viewHolder.getAdapterPosition();
             int id = RepairsStorage.repairs.get(position).getId();
-            //Toast.makeText(MainActivity.this, Integer.toString(id), Toast.LENGTH_SHORT).show();
-
 
             Intent goToRepairDetailsActivity = new Intent(getBaseContext(), RepairDetailsActivity.class);
             goToRepairDetailsActivity.putExtra("id", id);
@@ -32,35 +35,62 @@ public class MainActivity extends AppCompatActivity {
         }
     };
 
+    private SwipeRefreshLayout mSwipeRefreshLayout;
+
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState)  {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbarDetails);
         setSupportActionBar(toolbar);
 
+
+        mSwipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipeContainer);
+        mSwipeRefreshLayout.setOnRefreshListener(this);
+        mSwipeRefreshLayout.setProgressViewOffset(false,100,150);
+
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
+
+            // обработчик нажатия фаба поиска
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Обновляем список заказов", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-
-                DBAgent.setActivity(MainActivity.this);
-                DBAgent.getLastRepairs();
+                Intent goToFilterActivity = new Intent(getBaseContext(), RepairDetailsActivity.class);
+                startActivity(goToFilterActivity);
             }
         });
 
-        //DBAgent.context = getBaseContext();
+
         DBAgent.setContext(getBaseContext());
         DBAgent.initRequestQueue();
 
         //RepairsStorage.repairs.add(new Repair(666, "canon lexmark laserJet", "Putin", Repair.ClientTypes.IP, Repair.Status.DONE));
         //RepairsStorage.repairs.add(new Repair(1488, "mobila", "IFNS", Repair.ClientTypes.IP, Repair.Status.DONE));
-        //RepairsStorage.repairs.add(new Repair(228, "utug", "Agropromservis", Repair.ClientTypes.IP, Repair.Status.DONE));
+
         redrawList();
+    }
 
+    // при свайпе для обновления
+    @Override
+    public void onRefresh() {
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                // Отменяем анимацию обновления
+                mSwipeRefreshLayout.setRefreshing(false);
+                Log.d("Volley", "obnova");
 
+                Snackbar.make(findViewById(android.R.id.content), "Обновляем список заказов", Snackbar.LENGTH_LONG)
+                        .setAction("Action", null).show();
+
+                DBAgent.setActivity(MainActivity.this);
+
+                //получаем список ремонтов с сервера
+                DBAgent.getLastRepairs();
+                DBAgent.checkForUpdates();
+
+            }
+        }, 0);
     }
 
     public void redrawList(){
@@ -71,6 +101,28 @@ public class MainActivity extends AppCompatActivity {
         // устанавливаем для списка адаптер
         recyclerView.setAdapter(adapter);
         adapter.setOnItemClickListener(onItemClickListener);
+    }
+
+    // показываем, если имеется обновление для приложения
+    public void doUpdate(){
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage("Доступно обновление")
+                .setPositiveButton("Установить", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("http://ubunterro.ru/ServiceHelper/app-release.apk"));
+                        startActivity(browserIntent);
+                    }
+                })
+                .setNegativeButton("Установить позже", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        Toast toast = Toast.makeText(DBAgent.getContext(), "Я, значит, старался, а вы вот как... Зря, зря...", Toast.LENGTH_LONG);
+                        toast.show();
+                    }
+                });
+        // Create the AlertDialog object and return it
+        builder.create().show();
+
+
     }
 
     @Override
@@ -89,7 +141,6 @@ public class MainActivity extends AppCompatActivity {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.loginMenuItem) {
-            Log.d("actif", "yas");
             Intent goToLoginActivity = new Intent(this, LoginActivity.class);
             this.startActivity(goToLoginActivity);
         }

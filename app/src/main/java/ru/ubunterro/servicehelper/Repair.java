@@ -24,6 +24,26 @@ public class Repair {
 
     private int id;
 
+    private String name = "none";
+    private String client = "noone";
+    private Status status = Status.IN_WORK;
+    private String description = "";
+    private String recv = "";
+    private String def = "";
+
+
+    private String serialNumber = "";
+
+    public String getResponsible() {
+        return responsible;
+    }
+
+    public void setResponsible(String responsible) {
+        this.responsible = responsible;
+    }
+
+    private String responsible = "noone";
+
     public int getId() {
         return id;
     }
@@ -58,10 +78,8 @@ public class Repair {
         this.status = status;
     }
 
-    private String name = "none";
-    private String client = "noone";
-    private Status status = Status.IN_WORK;
-    private String description = "";
+
+
 
     public String getDescription() {
         return description;
@@ -87,7 +105,15 @@ public class Repair {
         this.def = def;
     }
 
+    public String getSerialNumber() {
+        return serialNumber;
+    }
 
-    private String recv = "";
-    private String def = "";
+    public void setSerialNumber(String serialNumber) {
+        this.serialNumber = serialNumber;
+    }
+
+
+
+
 }
