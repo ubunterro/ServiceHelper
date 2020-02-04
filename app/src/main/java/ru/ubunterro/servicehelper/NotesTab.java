@@ -155,7 +155,10 @@ public class NotesTab extends Fragment {
         webView.getSettings().setAppCacheEnabled(false);
 
         // указываем страницу загрузки
-        webView.loadUrl("http://149.154.68.13/ServiceHelper/comments.php?code=U1ZIQVND0JjQu9GM0Y8&rep_id="+Integer.toString(repairId));
+        webView.loadUrl("http://zip46.ru/servicehelper/comments.php?code=" +
+                SettingsManager.getLogin(getActivity().getApplicationContext()) +
+                "&rep_id="+Integer.toString(repairId));
+
 
         return view;
 

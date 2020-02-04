@@ -35,8 +35,20 @@ public class SettingsManager {
         editor.apply();
     }
 
+    public static void setServer2(Context context, String server){
+        SharedPreferences settings = context.getSharedPreferences("Settings", 0);
+        SharedPreferences.Editor editor = settings.edit();
+        editor.putString("server2", server);
+        editor.apply();
+    }
+
     public static String getServer(Context context){
         SharedPreferences settings = context.getSharedPreferences("Settings", 0);
-        return settings.getString("server", "http://192.168.112.190:1488/api.php");
+        return settings.getString("server", "http://192.168.112.75:81/api.php");
+    }
+
+    public static String getServer2(Context context){
+        SharedPreferences settings = context.getSharedPreferences("Settings", 0);
+        return settings.getString("server2", "http://188.187.143.80:2081/api.php");
     }
 }

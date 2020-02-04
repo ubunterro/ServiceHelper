@@ -49,8 +49,6 @@ public class InfoTab extends Fragment implements View.OnClickListener {
         TextView textDefInfo =  view.findViewById(R.id.textDefInfo);
         TextView textRecvInfo =  view.findViewById(R.id.textRecvInfo);
         TextView textDescInfo = view.findViewById(R.id.textDescInfo);
-        TextView textSerialInfo = view.findViewById(R.id.textSerialInfo);
-        TextView textResponsibleInfo = view.findViewById(R.id.textResponsibleInfo);
 
         Log.d("tabs", textNameInfo.getText().toString());
 
@@ -59,8 +57,7 @@ public class InfoTab extends Fragment implements View.OnClickListener {
         textDefInfo.setText(r.getDef());
         textRecvInfo.setText(r.getRecv());
         textDescInfo.setText(r.getDescription());
-        textSerialInfo.setText(r.getSerialNumber());
-        textResponsibleInfo.setText(r.getResponsible());
+
 
         Button orderButton = view.findViewById(R.id.buttonOrder);
         orderButton.setOnClickListener(this);
@@ -91,7 +88,8 @@ public class InfoTab extends Fragment implements View.OnClickListener {
                         params.put("fio", SettingsManager.getFIO(getContext()));
                         params.put("order", edt.getText().toString());
 
-                        DBAgent.makePostRequest("http://149.154.68.13/order.php", params);
+                        //TOD
+                        DBAgent.makePostRequest("http://zip46.ru/servicehelper/order.php", params);
                         Snackbar.make(parentView, "Заказ отправлен", Snackbar.LENGTH_LONG)
                                 .setAction("Action", null).show();
 
