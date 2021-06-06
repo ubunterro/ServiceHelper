@@ -1,6 +1,7 @@
 package ru.ubunterro.servicehelper;
 
 import android.content.Context;
+import android.util.Base64;
 import android.util.Log;
 
 import com.android.volley.AuthFailureError;
@@ -31,13 +32,15 @@ import java.util.Map;
 
 public class DBAgent {
 
-    static String baseUrl = "http://ubunterro.ru/service.php";//"http://192.168.0.101/serviceServer/rest.php?code=123";
-    static String updateUrl = "http://ubunterro.ru/ServiceHelper/version.json";
+    static String baseUrl = "";//http://ubunterro.ru/service.php";//"http://192.168.0.101/serviceServer/rest.php?code=123";
+    static String updateUrl = "http://zip46.ru/servicehelper/version.json";
 
     // версия сборки
-    static final int version = 200;
+    static final int version = 2;
 
     //TODO
+
+    public static JSONArray jsonArrayRepairs;
 
 
 
@@ -62,8 +65,15 @@ public class DBAgent {
 
     public static void updateBaseUrl(){
         //baseUrl = "http://ubunterro.ru/service.php";
-        baseUrl = SettingsManager.getServer(context)+"?code=" + SettingsManager.getLogin(context) + "&cmd=list";
-        Log.d("Volley", baseUrl);
+        //baseUrl = SettingsManager.getServer(context)+"?code=" + SettingsManager.getLogin(context) + "&cmd=list";
+        baseUrl = SettingsManager.getServer(context);
+        Log.d("SHLP", "Set base url to " + baseUrl);
+    }
+
+    @Deprecated
+    public static void switchToSecondServer(){
+        /*baseUrl = SettingsManager.getServer2(context)+"?code=" + SettingsManager.getLogin(context) + "&cmd=list";
+        Log.d("SHelper", "Switched to the second server " + baseUrl);*/
     }
 
     public static Context getContext(){
@@ -79,6 +89,7 @@ public class DBAgent {
                  List<Repair> repairs = new ArrayList<>();
 
                  JSONArray jRepairs = response.getJSONArray("repairs");
+                 jsonArrayRepairs = jRepairs;
 
                  for (int i = 0; i < jRepairs.length(); i++){
                      Repair r = new Repair();
@@ -107,14 +118,16 @@ public class DBAgent {
                  activity.redrawList();
 
                  // смотрим версию
-             } else if(type.equals("getVersion")){
+             }
+             else if(type.equals("getVersion")){
                  Log.w("Volley", type);
                  Integer lastVersion = Integer.parseInt(response.get("version").toString());
-
+                 Log.e("UPDTR", lastVersion.toString());
                  if (lastVersion > version){
                      activity.doUpdate();
                  }
-
+             } else if (type.equals("editRepair")){
+                 Log.d("SHLP", response.get("result").toString());
              }
         } catch (JSONException e) {
             e.printStackTrace();
@@ -123,10 +136,16 @@ public class DBAgent {
 
     }
 
-    public static void makeRequest(String URL){
+    /**
+     * @param URL request url
+     * @param method get or post
+     * @param request null if no request body
+     */
+    public static void makeRequest(String URL, int method, JSONObject request){
 
+        // FIXME big OOF conversion
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest
-                (Request.Method.GET, URL, null, new Response.Listener<JSONObject>() {
+                (method, URL, request, new Response.Listener<JSONObject>() {
 
                     @Override
                     public void onResponse(JSONObject response) {
@@ -134,29 +153,58 @@ public class DBAgent {
                         Log.d("Volley", response.toString());
                         requestCallback(response);
                     }
+
+
                 }, new Response.ErrorListener() {
 
                     @Override
                     public void onErrorResponse(VolleyError error) {
-
                         Log.e("Volley", "" + error.getMessage());
-                        MainActivity.showError("NetworkError: " + error.getMessage());
 
-                        if (error instanceof NoConnectionError) {
-                            Log.d("Volley", "NoConnectionError");
-                        } else if (error instanceof TimeoutError ) {
-                            Log.d("Volley", "TimeoutError");
-                        } else if (error instanceof AuthFailureError) {
-                            Log.d("Volley", "AuthFailureError");
-                        } else if (error instanceof ServerError) {
-                            Log.d("Volley", "ServerError");
-                        } else if (error instanceof NetworkError) {
-                            Log.d("Volley", "NetworkError");
-                        } else if (error instanceof ParseError) {
-                            Log.d("Volley", "ParseError");
+                        try {
+                            if (error != null) {
+                                if (!error.getMessage().equals("null")) {
+                                    MainActivity.showError("NetworkError: " + error.getMessage());
+                                }
+
+                                if (error instanceof NoConnectionError) {
+                                    Log.d("Volley", "NoConnectionError");
+                                } else if (error instanceof TimeoutError) {
+                                    Log.d("Volley", "TimeoutError");
+                                } else if (error instanceof AuthFailureError) {
+                                    Log.d("Volley", "AuthFailureError");
+                                } else if (error instanceof ServerError) {
+                                    Log.d("Volley", "ServerError");
+                                } else if (error instanceof NetworkError) {
+                                    Log.d("Volley", "NetworkError");
+                                } else if (error instanceof ParseError) {
+                                    Log.d("Volley", "ParseError");
+                                }
+                            }
+                        } catch (NullPointerException e){
+                            Log.d("Volley", "Null error");
                         }
                     }
-                });
+
+
+                }) {
+
+            @Override
+            protected Map<String, String> getParams() {
+                Map<String, String> params = new HashMap<String, String>();
+                return params;
+            }
+
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                HashMap<String, String> params = new HashMap<String, String>();
+                // TODO proper auth from settings
+                String creds = String.format("%s:%s","admin","admin");
+                String auth = "Basic " + Base64.encodeToString(creds.getBytes(), Base64.DEFAULT);
+                params.put("Authorization", auth);
+                return params;
+            }
+        };
 
         queue.add(jsonObjectRequest);
     }
@@ -194,23 +242,26 @@ public class DBAgent {
         queue.add(postRequest);
     }
 
-    public static void getLastRepairs(){
-        List<Repair> repairs = new ArrayList<Repair>();
-        makeRequest(baseUrl);
+    public static void getLastRepairs(boolean tryToSwitchServer){
+        //List<Repair> repairs = new ArrayList<Repair>();
+
+        makeRequest(baseUrl + "/api/", Request.Method.GET, null);
 
     }
 
     public static void checkForUpdates(){
-        makeRequest(updateUrl);
+        makeRequest(updateUrl, Request.Method.GET, null);
     }
-
 
 
     public static void getRepairInfo(){
 
     }
 
-    public static void setRepairInfo(){
+    // устанавливает на сервере новые значения
+    public static void setRepairInfo(Repair r){
+        makeRequest(baseUrl + "/edit", Request.Method.POST, r.toJSONObject());
+        Log.e("SHLP", "made req " + r.toJSONObject().toString());
 
     }
 }

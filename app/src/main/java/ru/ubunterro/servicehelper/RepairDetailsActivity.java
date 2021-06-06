@@ -48,7 +48,12 @@ public class RepairDetailsActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayShowHomeEnabled(true);
 
         getSupportActionBar().setTitle(Integer.toString(repairId));
-            }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+    }
 
     private void setupViewPager(ViewPager viewPager){
         Log.d("tabs", "setup");

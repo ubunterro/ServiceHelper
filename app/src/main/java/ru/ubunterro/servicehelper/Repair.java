@@ -1,5 +1,13 @@
 package ru.ubunterro.servicehelper;
 
+import android.util.Log;
+
+import com.google.gson.Gson;
+import com.google.gson.annotations.SerializedName;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
 public class Repair {
     public Repair(){
 
@@ -16,8 +24,11 @@ public class Repair {
     }
 
     public enum Status{
-        IN_WORK,
+        @SerializedName("0")
+        IN_WORK ,
+        @SerializedName("1")
         DONE,
+        @SerializedName("2")
         ZIP
     }
 
@@ -27,6 +38,7 @@ public class Repair {
     private String name = "none";
     private String client = "noone";
     private Status status = Status.IN_WORK;
+    @SerializedName("desc")
     private String description = "";
     private String recv = "";
     private String def = "";
@@ -68,8 +80,6 @@ public class Repair {
         this.client = client;
     }
 
-
-
     public Status getStatus() {
         return status;
     }
@@ -77,9 +87,6 @@ public class Repair {
     public void setStatus(Status status) {
         this.status = status;
     }
-
-
-
 
     public String getDescription() {
         return description;
@@ -114,6 +121,17 @@ public class Repair {
     }
 
 
+    // serialization
+    public JSONObject toJSONObject(){
+        Gson gson = new Gson();
+        try {
+            return new JSONObject(gson.toJson(this));
+        } catch (JSONException e) {
+            Log.e("SHLP", "Failed serialization of " + this.toString());
+        }
+
+        return new JSONObject();
+    }
 
 
 }

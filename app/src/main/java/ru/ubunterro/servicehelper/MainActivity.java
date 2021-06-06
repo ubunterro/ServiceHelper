@@ -28,7 +28,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
             RecyclerView.ViewHolder viewHolder = (RecyclerView.ViewHolder) v.getTag();
             int position = viewHolder.getAdapterPosition();
             int id = RepairsStorage.repairs.get(position).getId();
-
+            
             Intent goToRepairDetailsActivity = new Intent(getBaseContext(), RepairDetailsActivity.class);
             goToRepairDetailsActivity.putExtra("id", id);
             startActivity(goToRepairDetailsActivity);
@@ -55,8 +55,9 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
             // обработчик нажатия фаба поиска
             @Override
             public void onClick(View view) {
-                Intent goToFilterActivity = new Intent(getBaseContext(), RepairDetailsActivity.class);
-                startActivity(goToFilterActivity);
+                Intent goToSearchActivity = new Intent(getBaseContext(), SearchActivity.class);
+                goToSearchActivity.putExtra("id", 123);
+                startActivity(goToSearchActivity);
             }
         });
 
@@ -86,11 +87,14 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                 DBAgent.setActivity(MainActivity.this);
 
                 //получаем список ремонтов с сервера
-                DBAgent.getLastRepairs();
+                DBAgent.getLastRepairs(true);
                 DBAgent.checkForUpdates();
 
             }
         }, 0);
+
+        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        fab.setVisibility(FloatingActionButton.VISIBLE);
     }
 
     public void redrawList(){
@@ -109,7 +113,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
         builder.setMessage("Доступно обновление")
                 .setPositiveButton("Установить", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
-                        Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("http://ubunterro.ru/ServiceHelper/app-release.apk"));
+                        Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("http://zip46.ru/servicehelper/app-release.apk"));
                         startActivity(browserIntent);
                     }
                 })
@@ -141,6 +145,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.loginMenuItem) {
+            Log.d("actif", "yas");
             Intent goToLoginActivity = new Intent(this, LoginActivity.class);
             this.startActivity(goToLoginActivity);
         }

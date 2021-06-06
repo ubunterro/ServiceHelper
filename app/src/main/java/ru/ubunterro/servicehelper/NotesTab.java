@@ -94,8 +94,7 @@ public class NotesTab extends Fragment {
         webView.setWebViewClient(new MyWebViewClient());
         webView.setWebChromeClient(new WebChromeClient()
         {
-            // For 3.0+ Devices (Start)
-            // onActivityResult attached before constructor
+
             protected void openFileChooser(ValueCallback uploadMsg, String acceptType)
             {
                 mUploadMessage = uploadMsg;

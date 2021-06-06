@@ -1,0 +1,360 @@
+@startuml
+
+title __SERVICEHELPER's Class Diagram__\n
+
+  namespace ru.ubunterro.servicehelper {
+    class ru.ubunterro.servicehelper.DBAgent {
+        {static} + context : Context
+        {static} + jsonArrayRepairs : JSONArray
+        {static} ~ baseUrl : String
+        {static} ~ updateUrl : String
+        {static} ~ version : int
+        {static} - activity : MainActivity
+        {static} - queue : RequestQueue
+        {static} + checkForUpdates()
+        {static} + getContext()
+        {static} + getLastRepairs()
+        {static} + getRepairInfo()
+        {static} + initRequestQueue()
+        {static} + makePostRequest()
+        {static} + makeRequest()
+        {static} + setActivity()
+        {static} + setContext()
+        {static} + setRepairInfo()
+        {static} + switchToSecondServer()
+        {static} + updateBaseUrl()
+        {static} - requestCallback()
+    }
+  }
+  
+
+  namespace ru.ubunterro.servicehelper {
+    class ru.ubunterro.servicehelper.DataAdapter {
+        - inflater : LayoutInflater
+        - mOnItemClickListener : OnClickListener
+        - repairs : List<Repair>
+        + DataAdapter()
+        + getItemCount()
+        + onBindViewHolder()
+        + onCreateViewHolder()
+        + setOnItemClickListener()
+        ~ DataAdapter()
+    }
+  }
+  
+
+  namespace ru.ubunterro.servicehelper {
+    class ru.ubunterro.servicehelper.DataAdapter.ViewHolder {
+        ~ clientView : TextView
+        ~ idView : TextView
+        ~ imageView : ImageView
+        ~ nameView : TextView
+        + ViewHolder()
+    }
+  }
+  
+
+  namespace ru.ubunterro.servicehelper {
+    class ru.ubunterro.servicehelper.DeviceHistoryActivity {
+        # onCreate()
+    }
+  }
+  
+
+  namespace ru.ubunterro.servicehelper {
+    class ru.ubunterro.servicehelper.EditRepairActivity {
+        # onCreate()
+    }
+  }
+  
+
+  namespace ru.ubunterro.servicehelper {
+    class ru.ubunterro.servicehelper.FirstFragment {
+        + onCreateView()
+        + onViewCreated()
+    }
+  }
+  
+
+  namespace ru.ubunterro.servicehelper {
+    class ru.ubunterro.servicehelper.InfoTab {
+        {static} - TAG : String
+        + InfoTab()
+        + onClick()
+        + onCreateView()
+    }
+  }
+  
+
+  namespace ru.ubunterro.servicehelper {
+    class ru.ubunterro.servicehelper.LoginActivity {
+        + setLogin()
+        # onCreate()
+    }
+  }
+  
+
+  namespace ru.ubunterro.servicehelper {
+    class ru.ubunterro.servicehelper.MainActivity {
+        - mSwipeRefreshLayout : SwipeRefreshLayout
+        - onItemClickListener : OnClickListener
+        + doUpdate()
+        + onCreateOptionsMenu()
+        + onOptionsItemSelected()
+        + onRefresh()
+        + redrawList()
+        {static} + showError()
+        # onCreate()
+    }
+  }
+  
+
+  namespace ru.ubunterro.servicehelper {
+    class ru.ubunterro.servicehelper.NotesTab {
+        {static} + REQUEST_SELECT_FILE : int
+        + uploadMessage : ValueCallback<Uri[]>
+        {static} ~ webView : WebView
+        {static} - FILECHOOSER_RESULTCODE : int
+        - mUploadMessage : ValueCallback<Uri>
+        + NotesTab()
+        + onActivityResult()
+        + onCreateView()
+    }
+  }
+  
+
+  namespace ru.ubunterro.servicehelper {
+    class ru.ubunterro.servicehelper.NotesTab.MyWebViewClient {
+        + shouldOverrideUrlLoading()
+        + shouldOverrideUrlLoading()
+    }
+  }
+  
+
+  namespace ru.ubunterro.servicehelper {
+    class ru.ubunterro.servicehelper.Order {
+        - datetime : Date
+        - orderId : int
+        - text : String
+        - userOrderedName : String
+        + Order()
+        + getDatetime()
+        + getOrderId()
+        + getText()
+        + getUserOrderedName()
+        + setDatetime()
+        + setDatetime()
+        + setOrderId()
+        + setText()
+        + setUserOrderedName()
+    }
+  }
+  
+
+  namespace ru.ubunterro.servicehelper {
+    class ru.ubunterro.servicehelper.OrdersActivity {
+        # onCreate()
+    }
+  }
+  
+
+  namespace ru.ubunterro.servicehelper {
+    class ru.ubunterro.servicehelper.ProfileActivity {
+        # onCreate()
+    }
+  }
+  
+
+  namespace ru.ubunterro.servicehelper {
+    class ru.ubunterro.servicehelper.Repair {
+        - client : String
+        - def : String
+        - description : String
+        - id : int
+        - name : String
+        - recv : String
+        - responsible : String
+        - serialNumber : String
+        + Repair()
+        + Repair()
+        + getClient()
+        + getDef()
+        + getDescription()
+        + getId()
+        + getName()
+        + getRecv()
+        + getResponsible()
+        + getSerialNumber()
+        + getStatus()
+        + setClient()
+        + setDef()
+        + setDescription()
+        + setId()
+        + setName()
+        + setRecv()
+        + setResponsible()
+        + setSerialNumber()
+        + setStatus()
+    }
+  }
+  
+
+  namespace ru.ubunterro.servicehelper {
+    enum Status {
+      DONE
+      IN_WORK
+      ZIP
+    }
+  }
+  
+
+  namespace ru.ubunterro.servicehelper {
+    class ru.ubunterro.servicehelper.RepairDetailsActivity {
+        - mViewPager : ViewPager
+        + onSupportNavigateUp()
+        # onCreate()
+        - setupViewPager()
+    }
+  }
+  
+
+  namespace ru.ubunterro.servicehelper {
+    class ru.ubunterro.servicehelper.RepairsStorage {
+        {static} + repairs : List<Repair>
+        {static} + getRepair()
+        {static} + getRepairs()
+        {static} + setRepairs()
+    }
+  }
+  
+
+  namespace ru.ubunterro.servicehelper {
+    class ru.ubunterro.servicehelper.SearchActivity {
+        ~ foundRepairs : List<Repair>
+        - onItemClickListener : OnClickListener
+        + search()
+        # onCreate()
+        ~ redrawList()
+    }
+  }
+  
+
+  namespace ru.ubunterro.servicehelper {
+    class ru.ubunterro.servicehelper.SecondFragment {
+        + onCreateView()
+        + onViewCreated()
+    }
+  }
+  
+
+  namespace ru.ubunterro.servicehelper {
+    class ru.ubunterro.servicehelper.SectionPageAdapter {
+        - mFragmentList : List<Fragment>
+        - mFragmentTitleList : List<String>
+        + SectionPageAdapter()
+        + addFragment()
+        + getCount()
+        + getItem()
+        + getPageTitle()
+    }
+  }
+  
+
+  namespace ru.ubunterro.servicehelper {
+    class ru.ubunterro.servicehelper.SettingsActivity {
+        # onCreate()
+    }
+  }
+  
+
+  namespace ru.ubunterro.servicehelper {
+    class ru.ubunterro.servicehelper.SettingsManager {
+        {static} + getFIO()
+        {static} + getLogin()
+        {static} + getServer()
+        {static} + getServer2()
+        {static} + setFIO()
+        {static} + setLogin()
+        {static} + setLogin()
+        {static} + setServer()
+        {static} + setServer2()
+    }
+  }
+  
+
+  namespace ru.ubunterro.servicehelper {
+    class ru.ubunterro.servicehelper.WHItem {
+        - amount : double
+        - description : String
+        - itemId : int
+        - name : String
+        - photoURL : String
+        - serialNumber : String
+        + WHItem()
+        + getAmount()
+        + getDescription()
+        + getItemId()
+        + getName()
+        + getPhotoURL()
+        + getSerialNumber()
+        + setAmount()
+        + setDescription()
+        + setItemId()
+        + setName()
+        + setPhotoURL()
+        + setSerialNumber()
+    }
+  }
+  
+
+  namespace ru.ubunterro.servicehelper {
+    class ru.ubunterro.servicehelper.WarehouseActivity {
+        # onCreate()
+    }
+  }
+  
+
+  namespace ru.ubunterro.servicehelper {
+    class ru.ubunterro.servicehelper.WarehouseItemActivity {
+        # onCreate()
+    }
+  }
+  
+
+  ru.ubunterro.servicehelper.DataAdapter -up-|> android.support.v7.widget.RecyclerView.Adapter
+  ru.ubunterro.servicehelper.DataAdapter +-down- ru.ubunterro.servicehelper.DataAdapter.ViewHolder
+  ru.ubunterro.servicehelper.DataAdapter.ViewHolder -up-|> android.support.v7.widget.RecyclerView.ViewHolder
+  ru.ubunterro.servicehelper.DeviceHistoryActivity -up-|> android.support.v7.app.AppCompatActivity
+  ru.ubunterro.servicehelper.EditRepairActivity -up-|> android.support.v7.app.AppCompatActivity
+  ru.ubunterro.servicehelper.FirstFragment -up-|> android.support.v4.app.Fragment
+  ru.ubunterro.servicehelper.InfoTab .up.|> android.view.View.OnClickListener
+  ru.ubunterro.servicehelper.InfoTab -up-|> android.support.v4.app.Fragment
+  ru.ubunterro.servicehelper.InfoTab o-- ru.ubunterro.servicehelper.Repair : r
+  ru.ubunterro.servicehelper.LoginActivity -up-|> android.support.v7.app.AppCompatActivity
+  ru.ubunterro.servicehelper.MainActivity .up.|> android.support.v4.widget.SwipeRefreshLayout.OnRefreshListener
+  ru.ubunterro.servicehelper.MainActivity -up-|> android.support.v7.app.AppCompatActivity
+  ru.ubunterro.servicehelper.NotesTab -up-|> android.support.v4.app.Fragment
+  ru.ubunterro.servicehelper.NotesTab +-down- ru.ubunterro.servicehelper.NotesTab.MyWebViewClient
+  ru.ubunterro.servicehelper.NotesTab.MyWebViewClient -up-|> android.webkit.WebViewClient
+  ru.ubunterro.servicehelper.OrdersActivity -up-|> android.support.v7.app.AppCompatActivity
+  ru.ubunterro.servicehelper.ProfileActivity -up-|> android.support.v7.app.AppCompatActivity
+  ru.ubunterro.servicehelper.Repair o-- ru.ubunterro.servicehelper.Repair.Status : status
+  ru.ubunterro.servicehelper.Repair +-down- ru.ubunterro.servicehelper.Repair.Status
+  ru.ubunterro.servicehelper.RepairDetailsActivity -up-|> android.support.v7.app.AppCompatActivity
+  ru.ubunterro.servicehelper.RepairDetailsActivity o-- ru.ubunterro.servicehelper.SectionPageAdapter : mSectionsPageAdapter
+  ru.ubunterro.servicehelper.SearchActivity -up-|> android.support.v7.app.AppCompatActivity
+  ru.ubunterro.servicehelper.SecondFragment -up-|> android.support.v4.app.Fragment
+  ru.ubunterro.servicehelper.SectionPageAdapter -up-|> android.support.v4.app.FragmentPagerAdapter
+  ru.ubunterro.servicehelper.SettingsActivity -up-|> android.support.v7.app.AppCompatActivity
+  ru.ubunterro.servicehelper.WarehouseActivity -up-|> android.support.v7.app.AppCompatActivity
+  ru.ubunterro.servicehelper.WarehouseItemActivity -up-|> android.support.v7.app.AppCompatActivity
+
+
+right footer
+
+
+PlantUML diagram generated by SketchIt! (https://bitbucket.org/pmesmeur/sketch.it)
+For more information about this tool, please contact philippe.mesmeur@gmail.com
+endfooter
+
+@enduml
