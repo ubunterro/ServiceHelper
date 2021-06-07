@@ -188,6 +188,11 @@ public class DBAgent {
                  Storage.setParts(parts);
 
                  warehouseActivity.redrawList(parts);
+             } else if (type.equals("auth")){
+                 Log.d("SHLP", "authenticated!");
+                 SettingsManager.setName(context, response.get("name").toString());
+                 SettingsManager.setStatus(context, Integer.parseInt(response.get("status").toString()));
+
              }
         } catch (JSONException e) {
             e.printStackTrace();
@@ -214,9 +219,7 @@ public class DBAgent {
                         requestCallback(response);
                     }
 
-
                 }, new Response.ErrorListener() {
-
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         Log.e("Volley", "" + error.getMessage());
@@ -259,7 +262,10 @@ public class DBAgent {
             public Map<String, String> getHeaders() throws AuthFailureError {
                 HashMap<String, String> params = new HashMap<String, String>();
                 // TODO proper auth from settings
-                String creds = String.format("%s:%s","admin","admin");
+                String login = SettingsManager.getLogin(context);
+                String password = SettingsManager.getPassword(context);
+
+                String creds = String.format("%s:%s", login, password);
                 String auth = "Basic " + Base64.encodeToString(creds.getBytes(), Base64.DEFAULT);
                 params.put("Authorization", auth);
                 return params;
@@ -337,5 +343,9 @@ public class DBAgent {
 
     public static void getLastParts(){
         makeRequest(baseUrl + "/warehouse/api/", Request.Method.GET, null);
+    }
+
+    public static void auth(){
+        makeRequest(baseUrl + "/auth/", Request.Method.GET, null);
     }
 }

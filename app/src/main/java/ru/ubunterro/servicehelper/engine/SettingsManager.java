@@ -35,18 +35,28 @@ public class SettingsManager {
         return settings.getString("password", "NOPWD");
     }
 
-    @Deprecated
-    public static void setFIO(Context context, String fio){
+    public static void setName(Context context, String name){
         SharedPreferences settings = context.getSharedPreferences("Settings", 0);
         SharedPreferences.Editor editor = settings.edit();
-        editor.putString("fio", fio);
+        editor.putString("name", name);
         editor.apply();
     }
 
-    @Deprecated
-    public static String getFIO(Context context){
+    public static int getStatus(Context context){
         SharedPreferences settings = context.getSharedPreferences("Settings", 0);
-        return settings.getString("fio", "Repairer");
+        return settings.getInt("status", -1);
+    }
+
+    public static void setStatus(Context context, int status){
+        SharedPreferences settings = context.getSharedPreferences("Settings", 0);
+        SharedPreferences.Editor editor = settings.edit();
+        editor.putInt("status", status);
+        editor.apply();
+    }
+
+    public static String getName(Context context){
+        SharedPreferences settings = context.getSharedPreferences("Settings", 0);
+        return settings.getString("name", "");
     }
 
     public static void setServer(Context context, String server){
@@ -56,22 +66,35 @@ public class SettingsManager {
         editor.apply();
     }
 
-    @Deprecated
-    public static void setServer2(Context context, String server){
-        SharedPreferences settings = context.getSharedPreferences("Settings", 0);
-        SharedPreferences.Editor editor = settings.edit();
-        editor.putString("server2", server);
-        editor.apply();
-    }
 
     public static String getServer(Context context){
         SharedPreferences settings = context.getSharedPreferences("Settings", 0);
-        return settings.getString("server", "http://192.168.112.75:81/api.php");
+        return settings.getString("server", "");
     }
 
-    @Deprecated
-    public static String getServer2(Context context){
+    // переход по айди в поиске
+    public static void setFastGoto(Context context, boolean state){
         SharedPreferences settings = context.getSharedPreferences("Settings", 0);
-        return settings.getString("server2", "http://188.187.143.80:2081/api.php");
+        SharedPreferences.Editor editor = settings.edit();
+        editor.putBoolean("fastGoto", state);
+        editor.apply();
     }
+
+
+    public static boolean getFastGoto(Context context){
+        SharedPreferences settings = context.getSharedPreferences("Settings", 0);
+        return settings.getBoolean("fastGoto", true);
+    }
+
+
+    public static void logoff(Context context){
+        SettingsManager.setPassword(context, "");
+        SettingsManager.setLogin(context, "");
+        SettingsManager.setName(context, "");
+
+        Storage.repairs.clear();
+        Storage.parts.clear();
+        Storage.orders.clear();
+    }
+
 }

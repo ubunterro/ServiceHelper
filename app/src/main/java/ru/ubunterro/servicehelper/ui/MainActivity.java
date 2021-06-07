@@ -21,6 +21,7 @@ import android.widget.Toast;
 import ru.ubunterro.servicehelper.R;
 import ru.ubunterro.servicehelper.adapter.RepairDataAdapter;
 import ru.ubunterro.servicehelper.engine.DBAgent;
+import ru.ubunterro.servicehelper.engine.SettingsManager;
 import ru.ubunterro.servicehelper.engine.Storage;
 
 public class MainActivity extends AppCompatActivity implements SwipeRefreshLayout.OnRefreshListener {
@@ -65,12 +66,10 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
             }
         });
 
-
         DBAgent.setContext(getBaseContext());
         DBAgent.initRequestQueue();
 
-        //RepairsStorage.repairs.add(new Repair(666, "canon lexmark laserJet", "Putin", Repair.ClientTypes.IP, Repair.Status.DONE));
-        //RepairsStorage.repairs.add(new Repair(1488, "mobila", "IFNS", Repair.ClientTypes.IP, Repair.Status.DONE));
+        DBAgent.auth();
 
         redrawList();
     }
@@ -83,7 +82,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
             public void run() {
                 // Отменяем анимацию обновления
                 mSwipeRefreshLayout.setRefreshing(false);
-                Log.d("Volley", "obnova");
+                Log.d("SHLP", "refreshed list");
 
                 Snackbar.make(findViewById(android.R.id.content), "Обновляем список заказов", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
@@ -102,7 +101,6 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
     }
 
     public void redrawList(){
-        //Log.w("Volley", "redrawn!");
         RecyclerView recyclerView = (RecyclerView) findViewById(R.id.list);
         // создаем адаптер
         RepairDataAdapter adapter = new RepairDataAdapter(this, Storage.repairs);
@@ -160,6 +158,19 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
             Log.d("SHLP", "Opened warehouse from menu");
             Intent goToWHActivity = new Intent(this, WarehouseActivity.class);
             this.startActivity(goToWHActivity);
+        } else if (id == R.id.mainMenuProfileItem){
+            Log.d("SHLP", "Opened profile from menu");
+
+            if (!SettingsManager.getName(getBaseContext()).isEmpty()){
+                Intent goToProfileActivity = new Intent(this, ProfileActivity.class);
+                this.startActivity(goToProfileActivity);
+            } else {
+                Toast.makeText(getBaseContext(), "Вы не вошли в аккаунт!", Toast.LENGTH_LONG).show();
+            }
+        } else if (id == R.id.mainMenuSettingsItem) {
+            Log.d("SHLP", "Opened settings from menu");
+            Intent goToSettingsActivity = new Intent(this, SettingsActivity.class);
+            this.startActivity(goToSettingsActivity);
         }
 
         return true;

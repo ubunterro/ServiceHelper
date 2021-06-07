@@ -18,36 +18,32 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(R.layout.activity_login);
 
         TextInputEditText loginTextEdit = findViewById(R.id.textEditLogin);
-        TextInputEditText textEditFio = findViewById(R.id.textEditFIO);
+        TextInputEditText textEditPassword = findViewById(R.id.textEditPassword);
         TextInputEditText textEditServer = findViewById(R.id.textEditServer);
-        TextInputEditText textEditServer2 = findViewById(R.id.textEditServer2);
         loginTextEdit.setText(SettingsManager.getLogin(getBaseContext()));
-        textEditFio.setText(SettingsManager.getFIO(getBaseContext()));
         textEditServer.setText(SettingsManager.getServer(getBaseContext()));
-        textEditServer2.setText(SettingsManager.getServer2(getBaseContext()));
+        textEditPassword.setText(SettingsManager.getPassword(getBaseContext()));
 
     }
 
-    //Button buttonSetLogin = findViewById(R.id.buttonSaveLogin);
-
-
+    // on button press
     public void setLogin(View v){
         TextInputEditText loginTextEdit = findViewById(R.id.textEditLogin);
-        TextInputEditText textEditFio = findViewById(R.id.textEditFIO);
+        TextInputEditText textEditPassword= findViewById(R.id.textEditPassword);
         TextInputEditText textEditServer = findViewById(R.id.textEditServer);
-        TextInputEditText textEditServer2 = findViewById(R.id.textEditServer2);
 
         String login = loginTextEdit.getText().toString();
-        String fio = textEditFio.getText().toString();
+        String password = textEditPassword.getText().toString();
         String server = textEditServer.getText().toString();
-        String server2 = textEditServer2.getText().toString();
+
 
         SettingsManager.setLogin(getApplicationContext(), login);
-        SettingsManager.setFIO(getApplicationContext(), fio);
+        SettingsManager.setPassword(getApplicationContext(), password);
         SettingsManager.setServer(getApplicationContext(), server);
-        SettingsManager.setServer2(getApplicationContext(), server2);
+
 
         DBAgent.updateBaseUrl();
+        DBAgent.auth();
 
         Snackbar.make(v, "Сохранено", Snackbar.LENGTH_LONG).setAction("Action", null).show();
     }
