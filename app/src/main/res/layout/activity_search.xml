@@ -5,18 +5,18 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".SearchActivity">
+    tools:context=".ui.SearchActivity">
 
-    <android.support.design.widget.TextInputLayout
+    <com.google.android.material.textfield.TextInputLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <android.support.design.widget.TextInputEditText
+        <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/query"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Поиск" />
-    </android.support.design.widget.TextInputLayout>
+    </com.google.android.material.textfield.TextInputLayout>
 
     <Button
         android:id="@+id/buttonSearch"
@@ -25,7 +25,7 @@
         android:onClick="search"
         android:text=" Найти" />
 
-    <android.support.v7.widget.RecyclerView
+    <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/listSearch"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -33,9 +33,9 @@
         android:clipToPadding="false"
         android:paddingTop="60dp"
         android:scrollbars="vertical"
-        app:layoutManager="android.support.v7.widget.GridLayoutManager" >
+        app:layoutManager="androidx.recyclerview.widget.GridLayoutManager" >
 
-    </android.support.v7.widget.RecyclerView>
+    </androidx.recyclerview.widget.RecyclerView>
 
     <TextView
         android:id="@+id/textSearchResult"

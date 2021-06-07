@@ -1,10 +1,16 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context="ru.ubunterro.servicehelper.MainActivity">
+    tools:context="ru.ubunterro.servicehelper.ui.MainActivity">
     <item
         android:id="@+id/loginMenuItem"
         android:orderInCategory="100"
         android:title="Логин"
         app:showAsAction="never" />
+    <item
+        android:id="@+id/mainMenuWHItem"
+        android:title="Склад" />
+    <item
+        android:id="@+id/mainMenuOrderItem"
+        android:title="Заказы" />
 </menu>

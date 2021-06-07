@@ -1,0 +1,237 @@
+@startuml
+
+title __SERVICEHELPER.APP's Class Diagram__\n
+
+  namespace ru.ubunterro.servicehelper {
+    class ru.ubunterro.servicehelper.BuildConfig {
+    }
+  }
+  
+
+  namespace ru.ubunterro.servicehelper {
+    class ru.ubunterro.servicehelper.DBAgent {
+    }
+  }
+  
+
+  namespace ru.ubunterro.servicehelper {
+    class ru.ubunterro.servicehelper.DataAdapter {
+    }
+  }
+  
+
+  namespace ru.ubunterro.servicehelper {
+    class ru.ubunterro.servicehelper.DeviceHistoryActivity {
+    }
+  }
+  
+
+  namespace ru.ubunterro.servicehelper {
+    class ru.ubunterro.servicehelper.EditRepairActivity {
+    }
+  }
+  
+
+  namespace ru.ubunterro.servicehelper {
+    class ru.ubunterro.servicehelper.FirstFragment {
+    }
+  }
+  
+
+  namespace ru.ubunterro.servicehelper {
+    class ru.ubunterro.servicehelper.InfoTab {
+    }
+  }
+  
+
+  namespace ru.ubunterro.servicehelper {
+    class ru.ubunterro.servicehelper.LoginActivity {
+    }
+  }
+  
+
+  namespace ru.ubunterro.servicehelper {
+    class ru.ubunterro.servicehelper.MainActivity {
+    }
+  }
+  
+
+  namespace ru.ubunterro.servicehelper {
+    class ru.ubunterro.servicehelper.NotesTab {
+    }
+  }
+  
+
+  namespace ru.ubunterro.servicehelper {
+    class ru.ubunterro.servicehelper.Order {
+    }
+  }
+  
+
+  namespace ru.ubunterro.servicehelper {
+    class ru.ubunterro.servicehelper.OrdersActivity {
+    }
+  }
+  
+
+  namespace ru.ubunterro.servicehelper {
+    class ru.ubunterro.servicehelper.ProfileActivity {
+    }
+  }
+  
+
+  namespace ru.ubunterro.servicehelper {
+    class ru.ubunterro.servicehelper.Repair {
+    }
+  }
+  
+
+  namespace ru.ubunterro.servicehelper {
+    class ru.ubunterro.servicehelper.RepairDetailsActivity {
+    }
+  }
+  
+
+  namespace ru.ubunterro.servicehelper {
+    class ru.ubunterro.servicehelper.RepairsStorage {
+    }
+  }
+  
+
+  namespace ru.ubunterro.servicehelper {
+    class ru.ubunterro.servicehelper.SearchActivity {
+    }
+  }
+  
+
+  namespace ru.ubunterro.servicehelper {
+    class ru.ubunterro.servicehelper.SecondFragment {
+    }
+  }
+  
+
+  namespace ru.ubunterro.servicehelper {
+    class ru.ubunterro.servicehelper.SectionPageAdapter {
+    }
+  }
+  
+
+  namespace ru.ubunterro.servicehelper {
+    class ru.ubunterro.servicehelper.SettingsActivity {
+    }
+  }
+  
+
+  namespace ru.ubunterro.servicehelper {
+    class ru.ubunterro.servicehelper.SettingsManager {
+    }
+  }
+  
+
+  namespace ru.ubunterro.servicehelper {
+    class ru.ubunterro.servicehelper.WHItem {
+    }
+  }
+  
+
+  namespace ru.ubunterro.servicehelper {
+    class ru.ubunterro.servicehelper.WarehouseActivity {
+    }
+  }
+  
+
+  namespace ru.ubunterro.servicehelper {
+    class ru.ubunterro.servicehelper.WarehouseItemActivity {
+    }
+  }
+  
+
+  namespace ru.ubunterro.servicehelper {
+    namespace ui.dashboard {
+      class ru.ubunterro.servicehelper.ui.dashboard.DashboardFragment {
+      }
+    }
+  }
+  
+
+  namespace ru.ubunterro.servicehelper {
+    namespace ui.dashboard {
+      class ru.ubunterro.servicehelper.ui.dashboard.DashboardViewModel {
+      }
+    }
+  }
+  
+
+  namespace ru.ubunterro.servicehelper {
+    namespace ui.home {
+      class ru.ubunterro.servicehelper.ui.home.HomeFragment {
+      }
+    }
+  }
+  
+
+  namespace ru.ubunterro.servicehelper {
+    namespace ui.home {
+      class ru.ubunterro.servicehelper.ui.home.HomeViewModel {
+      }
+    }
+  }
+  
+
+  namespace ru.ubunterro.servicehelper {
+    namespace ui.notifications {
+      class ru.ubunterro.servicehelper.ui.notifications.NotificationsFragment {
+      }
+    }
+  }
+  
+
+  namespace ru.ubunterro.servicehelper {
+    namespace ui.notifications {
+      class ru.ubunterro.servicehelper.ui.notifications.NotificationsViewModel {
+      }
+    }
+  }
+  
+
+  ru.ubunterro.servicehelper.DataAdapter -up-|> android.support.v7.widget.RecyclerView.Adapter
+  ru.ubunterro.servicehelper.DeviceHistoryActivity -up-|> android.support.v7.app.AppCompatActivity
+  ru.ubunterro.servicehelper.EditRepairActivity -up-|> android.support.v7.app.AppCompatActivity
+  ru.ubunterro.servicehelper.FirstFragment -up-|> android.support.v4.app.Fragment
+  ru.ubunterro.servicehelper.InfoTab .up.|> android.view.View.OnClickListener
+  ru.ubunterro.servicehelper.InfoTab -up-|> android.support.v4.app.Fragment
+  ru.ubunterro.servicehelper.InfoTab o-- ru.ubunterro.servicehelper.Repair : r
+  ru.ubunterro.servicehelper.LoginActivity -up-|> android.support.v7.app.AppCompatActivity
+  ru.ubunterro.servicehelper.MainActivity .up.|> android.support.v4.widget.SwipeRefreshLayout.OnRefreshListener
+  ru.ubunterro.servicehelper.MainActivity -up-|> android.support.v7.app.AppCompatActivity
+  ru.ubunterro.servicehelper.NotesTab -up-|> android.support.v4.app.Fragment
+  ru.ubunterro.servicehelper.OrdersActivity -up-|> android.support.v7.app.AppCompatActivity
+  ru.ubunterro.servicehelper.ProfileActivity -up-|> android.support.v7.app.AppCompatActivity
+  ru.ubunterro.servicehelper.Repair o-- ru.ubunterro.servicehelper.Repair.Status : status
+  ru.ubunterro.servicehelper.RepairDetailsActivity -up-|> android.support.v7.app.AppCompatActivity
+  ru.ubunterro.servicehelper.RepairDetailsActivity o-- ru.ubunterro.servicehelper.SectionPageAdapter : mSectionsPageAdapter
+  ru.ubunterro.servicehelper.SearchActivity -up-|> android.support.v7.app.AppCompatActivity
+  ru.ubunterro.servicehelper.SecondFragment -up-|> android.support.v4.app.Fragment
+  ru.ubunterro.servicehelper.SectionPageAdapter -up-|> android.support.v4.app.FragmentPagerAdapter
+  ru.ubunterro.servicehelper.SettingsActivity -up-|> android.support.v7.app.AppCompatActivity
+  ru.ubunterro.servicehelper.WarehouseActivity -up-|> android.support.v7.app.AppCompatActivity
+  ru.ubunterro.servicehelper.WarehouseItemActivity -up-|> android.support.v7.app.AppCompatActivity
+  ru.ubunterro.servicehelper.ui.dashboard.DashboardFragment -up-|> android.support.v4.app.Fragment
+  ru.ubunterro.servicehelper.ui.dashboard.DashboardFragment o-- ru.ubunterro.servicehelper.ui.dashboard.DashboardViewModel : dashboardViewModel
+  ru.ubunterro.servicehelper.ui.dashboard.DashboardViewModel -up-|> android.arch.lifecycle.ViewModel
+  ru.ubunterro.servicehelper.ui.home.HomeFragment -up-|> android.support.v4.app.Fragment
+  ru.ubunterro.servicehelper.ui.home.HomeFragment o-- ru.ubunterro.servicehelper.ui.home.HomeViewModel : homeViewModel
+  ru.ubunterro.servicehelper.ui.home.HomeViewModel -up-|> android.arch.lifecycle.ViewModel
+  ru.ubunterro.servicehelper.ui.notifications.NotificationsFragment -up-|> android.support.v4.app.Fragment
+  ru.ubunterro.servicehelper.ui.notifications.NotificationsFragment o-- ru.ubunterro.servicehelper.ui.notifications.NotificationsViewModel : notificationsViewModel
+  ru.ubunterro.servicehelper.ui.notifications.NotificationsViewModel -up-|> android.arch.lifecycle.ViewModel
+
+
+right footer
+
+
+PlantUML diagram generated by SketchIt! (https://bitbucket.org/pmesmeur/sketch.it)
+For more information about this tool, please contact philippe.mesmeur@gmail.com
+endfooter
+
+@enduml
