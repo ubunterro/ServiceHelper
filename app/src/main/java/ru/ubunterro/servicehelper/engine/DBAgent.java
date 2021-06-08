@@ -1,11 +1,14 @@
 package ru.ubunterro.servicehelper.engine;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.util.Base64;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.NetworkError;
+import com.android.volley.NetworkResponse;
 import com.android.volley.NoConnectionError;
 import com.android.volley.ParseError;
 import com.android.volley.Request;
@@ -17,6 +20,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.bumptech.glide.Glide;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
@@ -24,6 +28,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.ByteArrayOutputStream;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -79,8 +84,6 @@ public class DBAgent {
     }
 
     public static void updateBaseUrl(){
-        //baseUrl = "http://ubunterro.ru/service.php";
-        //baseUrl = SettingsManager.getServer(context)+"?code=" + SettingsManager.getLogin(context) + "&cmd=list";
         baseUrl = SettingsManager.getServer(context);
         Log.d("SHLP", "Set base url to " + baseUrl);
     }
@@ -193,6 +196,9 @@ public class DBAgent {
                  SettingsManager.setName(context, response.get("name").toString());
                  SettingsManager.setStatus(context, Integer.parseInt(response.get("status").toString()));
 
+             } else {
+                 // no callback yet
+                 Log.e("SHLP", "RETURNED " + response.toString());
              }
         } catch (JSONException e) {
             e.printStackTrace();
@@ -347,5 +353,66 @@ public class DBAgent {
 
     public static void auth(){
         makeRequest(baseUrl + "/auth/", Request.Method.GET, null);
+    }
+
+    public static void setPartInfo(Part part){
+        makeRequest(baseUrl + "/warehouse/edit/", Request.Method.POST, part.toJSONObject());
+        Log.e("SHLP", "made req set part  " + part.toJSONObject().toString());
+    }
+
+    public static void createPart(Part part){
+        makeRequest(baseUrl + "/warehouse/create/", Request.Method.POST, part.toJSONObject());
+        Log.e("SHLP", "made req create part" + part.toJSONObject().toString());
+    }
+
+    public static void createRepair(Repair r) {
+        makeRequest(baseUrl + "/create/", Request.Method.POST, r.toJSONObject());
+        Log.e("SHLP", "made req create repair" + r.toJSONObject().toString());
+    }
+
+    public static byte[] getFileDataFromDrawable(Bitmap bitmap) {
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.PNG, 80, byteArrayOutputStream);
+        return byteArrayOutputStream.toByteArray();
+    }
+
+    public static void uploadBitmap(final Bitmap bitmap, int id) {
+        //our custom volley request
+        VolleyMultipartRequest volleyMultipartRequest = new VolleyMultipartRequest(Request.Method.POST, baseUrl + "/warehouse/uploadImg/" + Integer.toString(id),
+                new Response.Listener<NetworkResponse>() {
+                    @Override
+                    public void onResponse(NetworkResponse response) {
+                        try {
+                            JSONObject obj = new JSONObject(new String(response.data));
+                            Toast.makeText(context, obj.getString("result"), Toast.LENGTH_SHORT).show();
+                            Glide.with(context).load(baseUrl + "/storage/" + obj.getString("filename"));
+                            Log.d("SHLP", "tried to load " + baseUrl + "/storage/partImg/" + obj.getString("filename"));
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Toast.makeText(context, error.getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                }) {
+
+
+            /*
+             * Here we are passing image by renaming it with a unique name
+             * */
+            @Override
+            protected Map<String, DataPart> getByteData() {
+                Map<String, DataPart> params = new HashMap<>();
+                long imagename = System.currentTimeMillis();
+                params.put("file", new DataPart(imagename + ".png", getFileDataFromDrawable(bitmap)));
+                return params;
+            }
+        };
+
+        //adding the request to volley
+        queue.add(volleyMultipartRequest);
     }
 }

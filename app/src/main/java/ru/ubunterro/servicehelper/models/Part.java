@@ -78,6 +78,19 @@ public class Part {
         return amount;
     }
 
+    // returns double without a trailing zero if it's integer
+    // i.e "5.25" but "4" not "4.0"
+    public String getFormattedAmount(){
+        if (this.amount < 0){
+            return "";
+        }
+
+        if(this.amount == (long) this.amount)
+            return String.format("%d",(long)this.amount);
+        else
+            return String.format("%s",this.amount);
+    }
+
     public void setAmount(double amount) {
         this.amount = amount;
     }

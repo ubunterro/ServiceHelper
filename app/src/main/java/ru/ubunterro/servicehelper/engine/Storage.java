@@ -1,5 +1,7 @@
 package ru.ubunterro.servicehelper.engine;
 
+import android.graphics.Bitmap;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -11,6 +13,8 @@ public class Storage {
     public static List<Repair> repairs = new ArrayList<>();
     public static List<Part> parts = new ArrayList<>();
     public static List<Order> orders = new ArrayList<>();
+
+    public static Bitmap uploadingImage;
 
     public static void setRepairs(List<Repair> repairs) {
         Storage.repairs = repairs;

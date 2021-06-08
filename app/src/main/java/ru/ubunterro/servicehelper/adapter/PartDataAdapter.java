@@ -15,6 +15,7 @@ import com.bumptech.glide.Glide;
 import java.util.List;
 
 import ru.ubunterro.servicehelper.R;
+import ru.ubunterro.servicehelper.engine.SettingsManager;
 import ru.ubunterro.servicehelper.models.Part;
 
 public class PartDataAdapter extends RecyclerView.Adapter<PartDataAdapter.ViewHolder> {
@@ -42,13 +43,19 @@ public class PartDataAdapter extends RecyclerView.Adapter<PartDataAdapter.ViewHo
     public void onBindViewHolder(PartDataAdapter.ViewHolder holder, int position) {
         Part part = parts.get(position);
 
-        //Glide.with(holder.imageView.getContext()).load("http://goo.gl/gEgYUd").into(holder.imageView);
         Log.w("SHLP", part.getPhoto());
-        Glide.with(holder.imageView.getContext()).load(part.getPhoto()).into(holder.imageView);
+
+        if (part.getPhoto().isEmpty()){
+            Glide.with(holder.imageView.getContext()).load(
+                    SettingsManager.getServer(holder.imageView.getContext()) + "/storage/partImg/" + part.getId() + ".png")
+                    .into(holder.imageView);
+        } else {
+            Glide.with(holder.imageView.getContext()).load(part.getPhoto()).into(holder.imageView);
+        }
 
 
 
-        holder.nameView.setText(part.getName() + " ×" + Double.toString(part.getAmount()));
+        holder.nameView.setText(part.getName() + " ×" + part.getFormattedAmount());
         holder.SNView.setText(part.getSerialNumber());
         holder.descView.setText(part.getDescription());
 

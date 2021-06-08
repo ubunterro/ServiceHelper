@@ -1,9 +1,11 @@
 package ru.ubunterro.servicehelper.ui;
 
+
 import android.content.Intent;
+
 import android.os.Bundle;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.snackbar.Snackbar;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -23,18 +25,6 @@ import ru.ubunterro.servicehelper.models.Part;
 import static ru.ubunterro.servicehelper.engine.Storage.parts;
 
 public class WarehouseActivity extends AppCompatActivity {
-
-    /*
-    FloatingActionButton fab = findViewById(R.id.WHfab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
-       */
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -57,10 +47,14 @@ public class WarehouseActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+                // добавление нового предмета
+                Intent goToWarehouseItemActivity = new Intent(getBaseContext(), WarehouseItemActivity.class);
+                goToWarehouseItemActivity.putExtra("id", -1);
+                startActivity(goToWarehouseItemActivity);
             }
         });
+
+
     }
 
     @Override
@@ -73,7 +67,11 @@ public class WarehouseActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-
+    @Override
+    protected void onResume() {
+        super.onResume();
+        DBAgent.getLastParts();
+    }
 
     private View.OnClickListener onItemClickListener = new View.OnClickListener() {
         @Override
@@ -82,9 +80,9 @@ public class WarehouseActivity extends AppCompatActivity {
             int position = viewHolder.getAdapterPosition();
             int id = parts.get(position).getId();
 
-            Intent goToRepairDetailsActivity = new Intent(getBaseContext(), RepairDetailsActivity.class);
-            goToRepairDetailsActivity.putExtra("id", id);
-            startActivity(goToRepairDetailsActivity);
+            Intent goToWarehouseItemActivity = new Intent(getBaseContext(), WarehouseItemActivity.class);
+            goToWarehouseItemActivity.putExtra("id", id);
+            startActivity(goToWarehouseItemActivity);
         }
     };
 

@@ -33,9 +33,12 @@ public class OrdersActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayShowHomeEnabled(true);
 
         getSupportActionBar().setTitle("Заказы");
+    }
 
-
-
+    @Override
+    protected void onResume() {
+        super.onResume();
+        DBAgent.getLastOrders();
     }
 
     @Override
