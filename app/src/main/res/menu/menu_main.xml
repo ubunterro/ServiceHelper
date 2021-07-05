@@ -8,6 +8,9 @@
         android:title="Логин"
         app:showAsAction="never" />
     <item
+        android:id="@+id/mainMenuAddRepairItem"
+        android:title="Добавить ремонт" />
+    <item
         android:id="@+id/mainMenuProfileItem"
         android:title="Профиль" />
     <item

@@ -71,6 +71,12 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
 
         DBAgent.auth();
 
+        DBAgent.setActivity(MainActivity.this);
+
+        //получаем список ремонтов с сервера
+        DBAgent.getLastRepairs();
+        DBAgent.checkForUpdates();
+
         redrawList();
     }
 
@@ -86,8 +92,6 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
 
                 Snackbar.make(findViewById(android.R.id.content), "Обновляем список заказов", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
-
-                DBAgent.setActivity(MainActivity.this);
 
                 //получаем список ремонтов с сервера
                 DBAgent.getLastRepairs();
@@ -171,6 +175,11 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
             Log.d("SHLP", "Opened settings from menu");
             Intent goToSettingsActivity = new Intent(this, SettingsActivity.class);
             this.startActivity(goToSettingsActivity);
+        } else if (id == R.id.mainMenuAddRepairItem){
+            Log.d("SHLP", "Opened settings from menu");
+            Intent goToNewRepairActivity = new Intent(this, EditRepairActivity.class);
+            goToNewRepairActivity.putExtra("id", -1); // -1 means new repair
+            this.startActivity(goToNewRepairActivity);
         }
 
         return true;

@@ -11,13 +11,6 @@ public class SettingsManager {
         editor.apply();
     }
 
-    public static void setLogin(Context context){
-        SharedPreferences settings = context.getSharedPreferences("Settings", 0);
-        SharedPreferences.Editor editor = settings.edit();
-        editor.putString("login", null);
-        editor.apply();
-    }
-
     public static void setPassword(Context context, String password){
         SharedPreferences settings = context.getSharedPreferences("Settings", 0);
         SharedPreferences.Editor editor = settings.edit();
@@ -66,7 +59,6 @@ public class SettingsManager {
         editor.apply();
     }
 
-
     public static String getServer(Context context){
         SharedPreferences settings = context.getSharedPreferences("Settings", 0);
         return settings.getString("server", "");
@@ -80,12 +72,10 @@ public class SettingsManager {
         editor.apply();
     }
 
-
     public static boolean getFastGoto(Context context){
         SharedPreferences settings = context.getSharedPreferences("Settings", 0);
         return settings.getBoolean("fastGoto", true);
     }
-
 
     public static void logoff(Context context){
         SettingsManager.setPassword(context, "");

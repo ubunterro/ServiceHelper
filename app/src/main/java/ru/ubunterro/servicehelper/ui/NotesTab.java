@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 import android.webkit.ValueCallback;
 import android.webkit.WebChromeClient;
 import android.webkit.WebResourceRequest;
+import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.Toast;
@@ -91,6 +92,10 @@ public class NotesTab extends Fragment {
 
 
         webView = view.findViewById(R.id.commentView);
+        webView.getSettings().setDomStorageEnabled(true);
+        webView.getSettings().setAppCacheEnabled(true);
+        webView.getSettings().setLoadsImagesAutomatically(true);
+        webView.getSettings().setMixedContentMode(WebSettings.MIXED_CONTENT_ALWAYS_ALLOW);
         webView.setWebViewClient(new MyWebViewClient());
         webView.setWebChromeClient(new WebChromeClient()
         {
@@ -154,9 +159,12 @@ public class NotesTab extends Fragment {
         webView.getSettings().setAppCacheEnabled(false);
 
         // указываем страницу загрузки
-        webView.loadUrl("http://zip46.ru/servicehelper/comments.php?code=" +
-                SettingsManager.getLogin(getActivity().getApplicationContext()) +
-                "&rep_id="+Integer.toString(repairId));
+        //webView.loadUrl("http://zip46.ru/servicehelper/comments.php?code=" +
+         //       SettingsManager.getLogin(getActivity().getApplicationContext()) +
+         //       "&rep_id="+Integer.toString(repairId));
+
+        webView.loadUrl("http://zip46.ru/servicehelper/comments.php?rep_id="+Integer.toString(repairId));
+
 
 
         return view;

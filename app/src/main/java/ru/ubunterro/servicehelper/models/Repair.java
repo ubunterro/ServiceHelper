@@ -24,19 +24,19 @@ public class Repair {
     }
 
     public enum Status{
-        @SerializedName("0")
+        @SerializedName("2")
         IN_WORK ,
         @SerializedName("1")
         DONE,
-        @SerializedName("2")
+        @SerializedName("3")
         ZIP
     }
 
 
     private int id;
 
-    private String name = "none";
-    private String client = "noone";
+    private String name = "";
+    private String client = "";
     private Status status = Status.IN_WORK;
     @SerializedName("desc")
     private String description = "";

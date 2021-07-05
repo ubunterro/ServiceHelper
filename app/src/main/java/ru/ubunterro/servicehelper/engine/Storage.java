@@ -34,8 +34,6 @@ public class Storage {
         return repairs;
     }
 
-
-
     public static List<Part> getParts() {
         return parts;
     }

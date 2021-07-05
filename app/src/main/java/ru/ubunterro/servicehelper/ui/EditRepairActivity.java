@@ -18,6 +18,7 @@ import ru.ubunterro.servicehelper.models.Repair;
 public class EditRepairActivity extends AppCompatActivity {
 
     Repair r;
+    boolean isNewRepair = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,9 +26,20 @@ public class EditRepairActivity extends AppCompatActivity {
         setContentView(R.layout.activity_edit_repair);
 
         Intent intent = this.getIntent();
-        int repairId = intent.getExtras().getInt("id");
+        final int repairId = intent.getExtras().getInt("id");
 
-        r = Storage.getRepair(repairId);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+
+        if (repairId == -1){
+            isNewRepair = true;
+            r = new Repair();
+            getSupportActionBar().setTitle("Новый ремонт");
+        } else {
+            isNewRepair = false;
+            r = Storage.getRepair(repairId);
+            getSupportActionBar().setTitle(Integer.toString(repairId));
+        }
 
         TextView name = findViewById(R.id.textERNameInfo);
         TextView client = findViewById(R.id.textERclient);
@@ -36,7 +48,6 @@ public class EditRepairActivity extends AppCompatActivity {
         final EditText recv = findViewById(R.id.editTextERRecv);
         final EditText info = findViewById(R.id.editTextERinfo);
 
-
         name.setText(r.getName());
         client.setText(r.getClient());
 
@@ -44,27 +55,25 @@ public class EditRepairActivity extends AppCompatActivity {
         recv.setText(r.getRecv());
         info.setText(r.getDescription());
 
-
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setDisplayShowHomeEnabled(true);
-
-        getSupportActionBar().setTitle(Integer.toString(repairId));
-
-
-
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fabSaveEdit);
         fab.setOnClickListener(new View.OnClickListener() {
 
-            // обработчик нажатия фаба поиска
+            // обработчик нажатия фаба сохранения
             @Override
             public void onClick(View view) {
-                //Repair r = new Repair(2, "ass", "Иван Говнов", Repair.Status.DONE, "desc", "recv", "def");
+
 
                 r.setDef(def.getText().toString());
                 r.setRecv(recv.getText().toString());
                 r.setDescription(info.getText().toString());
 
-                DBAgent.setRepairInfo(r);
+
+                if (isNewRepair){
+                    DBAgent.createRepair(r);
+                } else {
+                    DBAgent.setRepairInfo(r);
+                }
+
 
                 onBackPressed();
             }

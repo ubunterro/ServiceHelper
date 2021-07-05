@@ -44,19 +44,20 @@ import ru.ubunterro.servicehelper.models.Repair;
 
 public class DBAgent {
 
-    static String baseUrl = "";//http://ubunterro.ru/service.php";//"http://192.168.0.101/serviceServer/rest.php?code=123";
-    static String updateUrl = "http://zip46.ru/servicehelper/version.json";
+    static String baseUrl = "";
+    static String updateUrl = "";
 
     // версия сборки
-    static final int version = 2;
-
-    //TODO
+    static final int version = 3;
 
     public static JSONArray jsonArrayRepairs;
 
     private static RequestQueue queue;
     public static Context context;
+
     private static MainActivity activity;
+    private static OrdersActivity ordersActivity;
+    private static WarehouseActivity warehouseActivity;
 
     public static void setActivity(MainActivity activity) {
         DBAgent.activity = activity;
@@ -69,9 +70,6 @@ public class DBAgent {
     public static void setWarehouseActivity(WarehouseActivity warehouseActivity) {
         DBAgent.warehouseActivity = warehouseActivity;
     }
-
-    private static OrdersActivity ordersActivity;
-    private static WarehouseActivity warehouseActivity;
 
     public static int initRequestQueue(){
         queue = Volley.newRequestQueue(context);
@@ -86,12 +84,6 @@ public class DBAgent {
     public static void updateBaseUrl(){
         baseUrl = SettingsManager.getServer(context);
         Log.d("SHLP", "Set base url to " + baseUrl);
-    }
-
-    @Deprecated
-    public static void switchToSecondServer(){
-        /*baseUrl = SettingsManager.getServer2(context)+"?code=" + SettingsManager.getLogin(context) + "&cmd=list";
-        Log.d("SHelper", "Switched to the second server " + baseUrl);*/
     }
 
     public static Context getContext(){
@@ -131,12 +123,24 @@ public class DBAgent {
                      r.setRecv(jRepair.getString("recv"));
 
                      //TODO wtf
-                     try {
+                     /*try {
                      r.setStatus(Repair.Status.values()[jRepair.getInt("status")]);
                      } catch (JSONException e){
                          r.setStatus(Repair.Status.IN_WORK);
+                     }*/
+
+
+                     switch (jRepair.getInt("status")){
+                         case 1:
+                             r.setStatus(Repair.Status.DONE);
+                             break;
+                         case 2:
+                             r.setStatus(Repair.Status.IN_WORK);
+                             break;
+                         case 3:
+                             r.setStatus(Repair.Status.ZIP);
+                             break;
                      }
-                     //r.setStatus();
 
                      repairs.add(r);
                  }
@@ -282,42 +286,7 @@ public class DBAgent {
     }
 
 
-
-    // A request without a callback
-    @Deprecated
-    public static void makePostRequest(String url, final Map<String, String> paramsIn){
-        StringRequest postRequest = new StringRequest(Request.Method.POST, url,
-                new Response.Listener<String>()
-                {
-                    @Override
-                    public void onResponse(String response) {
-                        // response
-                        Log.d("Volley", "post ok");
-                    }
-                },
-                new Response.ErrorListener()
-                {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        // error
-                        Log.d("Volley", "error post");
-                    }
-                }
-        ) {
-            @Override
-            protected Map<String, String> getParams()
-            {
-                Map<String, String>  params = paramsIn;
-                return params;
-            }
-        };
-
-        queue.add(postRequest);
-    }
-
     public static void getLastRepairs(){
-        //List<Repair> repairs = new ArrayList<Repair>();
-
         makeRequest(baseUrl + "/api/", Request.Method.GET, null);
 
     }
@@ -330,20 +299,14 @@ public class DBAgent {
         makeRequest(updateUrl, Request.Method.GET, null);
     }
 
-
-    public static void getRepairInfo(){
-
-    }
-
     // устанавливает на сервере новые значения
     public static void setRepairInfo(Repair r){
         makeRequest(baseUrl + "/edit", Request.Method.POST, r.toJSONObject());
         Log.e("SHLP", "made req " + r.toJSONObject().toString());
-
     }
 
     public static void makeOrder(Order o){
-        makeRequest(baseUrl + "/order/create", Request.Method.POST, o.toJSONObject());
+        makeRequest(baseUrl + "/order/create/", Request.Method.POST, o.toJSONObject());
         Log.e("SHLP", "made req " + o.toJSONObject().toString());
     }
 
@@ -366,7 +329,7 @@ public class DBAgent {
     }
 
     public static void createRepair(Repair r) {
-        makeRequest(baseUrl + "/create/", Request.Method.POST, r.toJSONObject());
+        makeRequest(baseUrl + "/create", Request.Method.POST, r.toJSONObject());
         Log.e("SHLP", "made req create repair" + r.toJSONObject().toString());
     }
 
